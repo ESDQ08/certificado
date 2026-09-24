@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Certificado — Legal &amp; Regulatory Consulting Peru</title>
+<link rel="icon" href="logos/logo.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1e4e5e;
+    --gold: #bfa475;
+    --navy: #1c2134;
+    --slate: #4c5262;
+    --logo-bg: #3c4556;
+  }
+  * { box-sizing: border-box; }
+  html { color-scheme: light; }
+  body {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: #eef0f2;
+    color: var(--navy);
+  }
+
+  .franja-logo {
+    background: var(--logo-bg);
+    border-bottom: 4px solid var(--gold);
+    display: flex;
+    justify-content: flex-start;
+    padding: 8px 32px;
+  }
+  .franja-logo img { height: 150px; width: auto; max-width: 100%; }
+
+  .certificado {
+    max-width: 1100px;
+    min-height: 620px;
+    margin: 48px auto;
+    background: white;
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    padding: 72px 96px 56px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .acredita {
+    font-size: 1.25rem;
+    margin: 0 0 64px;
+    color: var(--slate);
+  }
+  .acredita strong { color: var(--teal); font-weight: 700; }
+
+  .centro { text-align: center; }
+  .tratamiento { font-size: 1.25rem; margin: 0 0 14px; color: var(--slate); }
+  .nombre {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin: 0 0 40px;
+    color: var(--navy);
+  }
+  .verbo { font-size: 1.25rem; margin: 0 0 14px; color: var(--slate); }
+  .actividad {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--teal);
+    margin: 0;
+  }
+
+  .fecha {
+    text-align: right;
+    margin: auto 0 0;
+    padding-top: 72px;
+    font-size: 1.1rem;
+    color: var(--slate);
+  }
+
+  @media (max-width: 600px) {
+    .certificado { margin: 24px 16px; padding: 32px 24px; min-height: 0; }
+    .franja-logo { padding: 8px 16px; }
+    .franja-logo img { height: 110px; }
+    .nombre { font-size: 1.5rem; }
+    .actividad { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="franja-logo">
+    <img src="logos/logo.png" alt="Legal &amp; Regulatory Consulting Peru — TI Division">
+  </div>
+
+  <main class="certificado">
+    <p class="acredita"><strong id="empresa"></strong> acredita que:</p>
+
+    <div class="centro">
+      <p class="tratamiento" id="tratamiento"></p>
+      <h1 class="nombre" id="nombre"></h1>
+      <p class="verbo" id="verbo"></p>
+      <p class="actividad" id="actividad"></p>
+    </div>
+
+    <p class="fecha" id="fecha"></p>
+  </main>
+
+<script>
+  // Los datos llegan en el link del QR (?nombre=...&curso=...&verbo=...&sexo=H|M).
+  const EMPRESA = 'Legal & Regulatory Consulting Peru';
+  const datos = new URLSearchParams(location.search);
+
+  function tratamientoSegunSexo(sexo) {
+    const s = (sexo || '').trim().toUpperCase();
+    if (s.startsWith('H') || s.startsWith('MASC')) return 'El Sr.';
+    if (s.startsWith('M') || s.startsWith('F')) return 'La Sra.';
+    return 'El Sr./Sra.';
+  }
+
+  function comoOracion(texto) {
+    const t = texto.trim().toLowerCase();
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+
+  const verbo = datos.get('verbo');
+
+  document.getElementById('empresa').textContent = EMPRESA;
+  document.getElementById('tratamiento').textContent = tratamientoSegunSexo(datos.get('sexo'));
+  document.getElementById('nombre').textContent = datos.get('nombre') || '[NOMBRE DE LA PERSONA DEL CERTIFICADO]';
+  document.getElementById('verbo').textContent = verbo ? comoOracion(verbo) : '[VERBO]';
+  document.getElementById('actividad').textContent = datos.get('curso') || '[NOMBRE DEL CURSO / TALLER / CAPACITACIÓN / VOLUNTARIADO]';
+  document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-PE', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  });
+</script>
+</body>
+</html>
